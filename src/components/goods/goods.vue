@@ -1,6 +1,6 @@
 <template>
   <div class="goods">
-    <div class="menu-wrapper">
+    <div class="menu-wrapper" v-el:menu-wrapper>
       <ul>
         <li v-for="item in goods" class="menu-item">
           <span class="text" border-1px>
@@ -10,7 +10,7 @@
         </li>
       </ul>
     </div>
-    <div class="foods-wrapper">
+    <div class="foods-wrapper" v-el:foods-wrapper>
       <ul>
         <li v-for="item in goods" class="food-list">
           <h1 class="title">{{item.name}}</h1>
@@ -23,12 +23,10 @@
                 <h2 class="name">{{food.name}}</h2>
                 <p class="desc">{{food.description}}</p>
                 <div class="extra">
-                  <span class="count">月售{{food.sellCount}}</span>
-                  <span>好评率{{food.rating}}</span>
+                  <span class="count">月售{{food.sellCount}}</span><span>好评率{{food.rating}}</span>
                 </div>
                 <div class="price">
-                  <span class="now">￥{{food.price}}</span>
-                  <span class="old" v-show="oldPrice">￥{{food.oldPrice}}</span>
+                  <span class="now">￥{{food.price}}</span><span class="old" v-show="food.oldPrice">￥{{food.oldPrice}}</span>
                 </div>
               </div>
             </li>
@@ -40,6 +38,8 @@
 </template>
 
 <script type="text/ecmascript-6">
+  import BScroll from 'better-scroll';
+
    const ERR_OK = 0;
 
    export default {
@@ -59,8 +59,18 @@
          response = response.body;
          if (response.errno === ERR_OK) {
            this.goods = response.data;
+           this.$nextTick(() => {
+             this._initScroll();
+           });
          }
        });
+     },
+     methods: {
+       _initScroll() {
+         this.meunScroll = new BScroll(this.$els.menuWrapper, {});
+
+         this.foodsScroll = new BScroll(this.$els.foodsWrapper, {});
+       }
      }
    };
 </script>
@@ -114,6 +124,7 @@
       .title
         padding-left: 14px
         height: 26px
+        line-height: 26px
         border-left: 2px solid #d9dde1
         font-size: 12px
         color: rgb(14, 153, 159)
@@ -142,10 +153,10 @@
             font-size: 10px
             color: rbg(147, 153, 159)
           .desc
+            line-height: 12px
             margin-bottom: 8px
           .extra
-            line-height: 10px
-            &.count
+            .count
               margin-right: 12px
           .price
             font-weight: 700
