@@ -18,7 +18,7 @@
       </div>
     </div>
     <div class="ball-container">
-      <div v-for="ball in balls" v-show="ball.show" transition="drop">
+      <div v-for="ball in balls" v-show="ball.show" transition="drop" class="ball">
         <div class="inner inner-hook"></div>
       </div>
     </div>
@@ -105,7 +105,6 @@
     },
     methods: {
       drop(el) {
-        console.log(el);
         for (let i = 0; i < this.balls.length; i++) {
           let ball = this.balls[i];
           if (!ball.show) {
