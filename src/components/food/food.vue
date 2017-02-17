@@ -102,7 +102,9 @@
         if (!event._constructed) {
           return;
         }
-        this.$dispatch('cart.add', event.target);
+        <!--1.0-->
+        <!--this.$dispatch('cart.add', event.target);-->
+        this.$emit('cart.add', event.target);
         Vue.set(this.food, 'count', 1);
       },
       needShow(type, text) {
